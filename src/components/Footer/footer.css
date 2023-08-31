@@ -1,0 +1,22 @@
+footer p a{
+    position: relative;
+}
+footer p a:hover{
+    background-color: transparent;
+}
+footer p a::before{
+    position: absolute !important;
+    display: block;
+    width: 0%;
+    left: 0;
+    bottom: -5px;
+    background-color: rgb(231 72 33);
+    height: 2px;
+    transition: .5s ease-in-out all;
+    color: red;
+    content: "";
+}
+footer p a:hover::before{
+    width: 100%;
+
+}
