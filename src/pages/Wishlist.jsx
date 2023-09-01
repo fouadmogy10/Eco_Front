@@ -9,6 +9,10 @@ import Meta from "../components/Meta";
 
 function Wishlist() {
   const [favprod, WishlistState] =WishlistHook();
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
+  
   return (
     <>
     <Meta title={"My Wishlist"}/>

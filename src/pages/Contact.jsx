@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { createenquiry, resetState } from "../features/enquiry/enquirySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 let schema = Yup.object().shape({
   name: Yup.string()
@@ -47,7 +48,9 @@ function Contact() {
     },
   });
   const {isLoading} = useSelector((state) => state.enquiry);
-  
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
   return (
     <>
       <Meta title={"contact us"} />

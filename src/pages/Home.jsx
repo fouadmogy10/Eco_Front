@@ -28,20 +28,19 @@ import Spinner from "../components/Spinner";
 import { getProducts } from "../features/product/productSlice";
 
 function Home() {
-  const dispatch =useDispatch()
+  const dispatch = useDispatch();
   const [favprod, WishlistState] = WishlistHook();
   const { products, isLoading: PLoading } = useSelector(
     (state) => state.products
   );
 
   useEffect(() => {
-    dispatch(getProducts())
-  
-  }, [])
+    dispatch(getProducts());
+  }, []);
   if (PLoading) {
     return <Spinner />;
   }
-  
+
   return (
     <>
       <Meta title={"Home Page"} />
@@ -59,7 +58,7 @@ function Home() {
                     <br />
                     Collection
                   </h3>
-                  <Link to="/" className="cta-btn">
+                  <Link to="/store" className="cta-btn">
                     Shop now
                     <FaArrowRight />
                   </Link>
@@ -78,7 +77,7 @@ function Home() {
                     <br />
                     Collection
                   </h3>
-                  <Link to="/" className="cta-btn">
+                  <Link to="/store" className="cta-btn">
                     Shop now <FaArrowRight />
                   </Link>
                 </div>
@@ -96,7 +95,7 @@ function Home() {
                     <br />
                     Collection
                   </h3>
-                  <Link to="/" className="cta-btn">
+                  <Link to="/store" className="cta-btn">
                     Shop now <FaArrowRight />
                   </Link>
                 </div>
@@ -110,13 +109,13 @@ function Home() {
         {/* services section */}
         <section className="py-5">
           <Container>
-            <Row className="align-items-center justify-content-center">
+            <Row className="align-items-center  justify-content-md-center justify-content-xs-start">
               <Col
                 md={4}
                 lg={3}
                 sm="6"
                 xs={12}
-                className="d-flex mb-3 align-items-center services justify-content-center"
+                className="d-flex mb-3 align-items-center services justify-content-start"
               >
                 <div className="ico px-3">
                   <FaTruck size={35} />
@@ -131,7 +130,7 @@ function Home() {
                 lg={3}
                 sm="6"
                 xs={12}
-                className="d-flex mb-3 align-items-center services justify-content-center"
+                className="d-flex mb-3 align-items-center services justify-content-start"
               >
                 <div className="ico px-3">
                   <FaGift size={35} />
@@ -146,7 +145,7 @@ function Home() {
                 lg={3}
                 sm="6"
                 xs={12}
-                className="d-flex mb-3 align-items-center services justify-content-center"
+                className="d-flex mb-3 align-items-center services justify-content-start"
               >
                 <div className="ico px-3">
                   <FaHeadphones size={35} />
@@ -161,7 +160,7 @@ function Home() {
                 lg={3}
                 sm="6"
                 xs={12}
-                className="d-flex mb-3 align-items-center services justify-content-center"
+                className="d-flex mb-3 align-items-center services justify-content-start"
               >
                 <div className="ico px-3">
                   <FaServer size={35} />
@@ -176,7 +175,7 @@ function Home() {
                 lg={3}
                 sm="6"
                 xs={12}
-                className="d-flex mb-3 align-items-center services justify-content-center"
+                className="d-flex mb-3 align-items-center services justify-content-start"
               >
                 <div className="ico px-3">
                   <FaPaypal size={35} />
@@ -193,16 +192,18 @@ function Home() {
         <section className="products py-5">
           <Container>
             <Title title="most popular" />
-
-            {/* <Swiper
-              key={"a1"}
+            <Swiper
               slidesPerView={1}
-              spaceBetween={10}
+              spaceBetween={30}
               loop={true}
               autoplay={{
                 delay: 1500,
                 disableOnInteraction: true,
               }}
+              pagination={{
+                clickable: true,
+              }}
+              // navigation={true}
               breakpoints={{
                 640: {
                   slidesPerView: 2,
@@ -217,7 +218,7 @@ function Home() {
                   spaceBetween: 50,
                 },
               }}
-              modules={[Autoplay]}
+              modules={[Navigation, Autoplay]}
               className="mySwiper"
             >
               {PLoading ? (
@@ -240,96 +241,7 @@ function Home() {
                   }
                 })
               ) : null}
-            </Swiper> */}
-             {/* <Swiper
-        slidesPerView={1}
-        spaceBetween={10}
-        autoplay={{
-          delay: 1000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        loop={true}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 4,
-            spaceBetween: 40,
-          },
-          1024: {
-            slidesPerView: 5,
-            spaceBetween: 50,
-          },
-        }}
-        modules={[Pagination,Autoplay]}
-        className="mySwiper"
-      >
-        <SwiperSlide className="p-5">Slide 1</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 2</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 3</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 4</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 5</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 6</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 7</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 8</SwiperSlide>
-        <SwiperSlide className="p-5">Slide 9</SwiperSlide>
-      </Swiper> */}
-      <Swiper
-        slidesPerView={1}
-        spaceBetween={30}
-        loop={true}
-        autoplay={{
-          delay: 1000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        // navigation={true}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 40,
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 50,
-          },
-        }}
-        modules={[ Navigation,Autoplay]}
-        className="mySwiper"
-      >
-        
-        {PLoading ? (
-                <Skeleton />
-              ) : products.length > 0 ? (
-                products.map((item, idx) => {
-                  if (item.tags[0] == "popular") {
-                    return (
-                      <SwiperSlide key={idx}>
-                        <ProductCard
-                          id={item?._id}
-                          data={item}
-                          key={idx}
-                          ke={item._id}
-                          tag={item?.tags[0]}
-                          wish={favprod.length > 0 ? favprod : []}
-                        />
-                      </SwiperSlide>
-                    );
-                  }
-                })
-              ) : null}
-      </Swiper>
+            </Swiper>
           </Container>
         </section>
         {/* hot deal */}
@@ -337,7 +249,7 @@ function Home() {
         {/* product section */}
         <section className="products py-5">
           <Container>
-            <Title title="most popular" />
+            <Title title="Spacial & Featued" />
 
             <Swiper
               key={"a1"}

@@ -36,6 +36,7 @@ function ProductCard({ ke, data, id, tag }) {
   };
   return (
     <div className="product" key={ke}>
+      <Link to={`/products/${id}`}>
       <div className="product-img">
         <img
           loading="lazy"
@@ -50,6 +51,7 @@ function ProductCard({ ke, data, id, tag }) {
           <span className="new">{tag}</span>
         </div>
       </div>
+      </Link>
       <div className="product-body">
         <p className="product-category">{data?.category}</p>
         <h3 className="product-name">

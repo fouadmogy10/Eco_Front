@@ -38,8 +38,6 @@ function Review({ data, id, loading }) {
       
       setComment("")
       setstar(null)
-      // dispatch (getSingleProduct(id))
-      // console.log(star ,Comment,id);
     }
    }
   };
@@ -53,7 +51,7 @@ function Review({ data, id, loading }) {
 
       <div className="py-3">
         <Form onSubmit={addingRating}>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between flex-wrap">
             <Form.Label>Leave your comment </Form.Label>
             <ReactStars
               count={5}

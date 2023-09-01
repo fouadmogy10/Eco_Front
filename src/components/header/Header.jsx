@@ -155,11 +155,7 @@ function Header() {
                                 }}
                               >
                                 Log Out{" "}
-                                {isLoading ? (
-                                  <BounceLoader />
-                                ) : (
-                                  <BiLogOut size={18} />
-                                )}
+                               
                               </button>
                             </li>
                           </ul>

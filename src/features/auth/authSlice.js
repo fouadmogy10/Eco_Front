@@ -387,10 +387,10 @@ export const authSlice = createSlice({
         state.isErrorCart = false;
         state.isLoadingupdateCart = false;
         state.isSuccessCart = true;
-        state.cartProduct = action.payload;
-        if (state.isSuccessCart) {
-          toast.success("Product Updated successfully in Cart");
-        }
+        state.cart = action.payload;
+        // if (state.isSuccessCart) {
+        //   toast.success("Product Updated successfully in Cart");
+        // }
       })
       .addCase(updateQTY.rejected, (state, action) => {
         state.isErrorCart = true;

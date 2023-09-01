@@ -5,12 +5,12 @@ import { FaUser } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Meta from "../components/Meta";
-import { Container, InputGroup, Spinner } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Container, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { register, reset, resetState } from "../features/auth/authSlice";
+import { register } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 
 let schema = yup.object().shape({
@@ -29,8 +29,8 @@ let schema = yup.object().shape({
 });
 
 function SignUp() {
-  const [toggle, settoggle] = useState(false);
-  const [toggle2, settoggle2] = useState(false);
+  const [toggle, settoggle] = useState(true);
+  const [toggle2, settoggle2] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -62,14 +62,16 @@ function SignUp() {
   });
 
   const authState = useSelector((state) => state);
-  const { user, createdUser, isLoading, isSuccess } = authState.auth;
+  const { user, createdUser, isLoading } = authState.auth;
 
   useEffect(() => {
     if (user.userInfo !== null) {
       navigate("/");
     }
   }, [createdUser, isLoading, dispatch, navigate]);
-
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
   return (
     <>
       <Meta title={"Register"} />
@@ -79,6 +81,7 @@ function SignUp() {
             <FaUser size={40} /> register
           </h2>
           <span className="text-muted fs-5">create an account</span>
+          <span>Do you already have an account?<Link to={"/login"} className=" text-dark border-1 border-bottom border-dark ">Sign in </Link></span>
         </div>
 
         <Form
@@ -204,7 +207,7 @@ function SignUp() {
                 top: "22%",
                 right: "12px",
               }}
-              onClick={() => settoggle2(!toggle)}
+              onClick={() => settoggle2(!toggle2)}
             />
             ):(
               <AiFillEyeInvisible

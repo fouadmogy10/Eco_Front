@@ -4,12 +4,14 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Meta from "../components/Meta";
 import { Container, Spinner } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishlist, getcartItem, login, reset, resetState } from "../features/auth/authSlice";
+import {  login, reset } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useState } from "react";
 
 let schema = yup.object().shape({
   email: yup
@@ -20,6 +22,7 @@ let schema = yup.object().shape({
 });
 
 function Login() {
+  const [toggle2, settoggle2] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -49,6 +52,9 @@ function Login() {
       dispatch(reset());
     }
   }, [user, isError, isSuccess, isLoading, dispatch, navigate]);
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
   return (
     <>
       <Meta title={"Login Page"} />
@@ -57,7 +63,8 @@ function Login() {
           <h2 className="display-5 fw-bolder mb-2">
             <FaSignInAlt size={40} /> <>Login</>
           </h2>
-          <span className="text-muted fs-5">Login to your account</span>
+          <span className=" fs-5 d-block">Login to your account</span>
+          <span>Are you not registered before? <Link to={"/register"} className=" text-dark border-1 border-bottom border-dark ">Create an account</Link></span>
         </div>
 
         <Form
@@ -81,14 +88,37 @@ function Login() {
 
           <Form.Group className="my-3" controlId="password">
             <Form.Control
+            className="postion-relative"
               required
               name="password"
-              type="password"
+              type={toggle2 ? "password" : "text"}
               placeholder="Password"
               onChange={formik.handleChange("password")}
               onBlur={formik.handleBlur("password")}
               value={formik.values.password}
             />
+             {
+            toggle2?(
+              <AiFillEye
+              cursor={"pointer"}
+              className="position-absolute"
+              style={{
+                top: "22%",
+                right: "12px",
+              }}
+              onClick={() => settoggle2(!toggle2)}
+            />
+            ):(
+              <AiFillEyeInvisible
+              cursor={"pointer"}
+              className="position-absolute"
+              style={{
+                top: "22%",
+                right: "12px",
+              }}
+              onClick={() => settoggle2(!toggle2)}
+            />)
+          }
             <div className="error mt-2 text-danger">
               {formik.touched.password && formik.errors.password}
             </div>

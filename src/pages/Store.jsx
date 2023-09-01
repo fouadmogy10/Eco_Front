@@ -6,12 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import WishlistHook from "../Hooks/WishlistHook";
 import Filter from "../components/Offcanvas";
 import StoreSkelton from "../components/StoreSkelton";
+import { useEffect } from "react";
 function Store() {
   const dispatch = useDispatch();
   const [favprod, WishlistState] = WishlistHook();
   const { products ,isLoading} = useSelector((state) => state.products);
   const { brands } = useSelector((state) => state.brand);
   const { pCategories } = useSelector((state) => state.category);
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
   return (
     <>
       <Meta title={"our store"} />

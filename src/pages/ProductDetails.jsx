@@ -47,10 +47,9 @@ function ProductDetails() {
         navigate("/cart");
       }
     } else {
-      toast.warn("Please Login");
+      navigate("/login")
     }
   };
-  console.log(cart.some((fItem) => fItem.productId._id == id) == true);
   if (isLoading) {
     return <Spinner />;
   }

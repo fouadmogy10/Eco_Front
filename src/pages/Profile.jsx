@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../features/auth/authSlice";
 import Meta from "../components/Meta";
+import { useEffect } from "react";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ function Profile() {
     dispatch(updateUser(formData));
     setEdit(true);
   };
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
   return (
     <>
       <Meta title={"My Profile"} />

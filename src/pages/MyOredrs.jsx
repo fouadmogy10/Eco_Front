@@ -3,10 +3,14 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Lottie from "../components/Lottie";
 import Meta from "../components/Meta";
+import { useEffect } from "react";
 const MyOredrs = () => {
   const { myOrder } = useSelector(
     (state) => state.auth
   )
+  useEffect(() => {
+    window.scroll(0,0)
+  }, [])
   return (
     <section className="orders py-5 hero">
 
