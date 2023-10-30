@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify';
 import Profile from './pages/Profile';
 import Checkout from './pages/Checkout';
 import MyOredrs from './pages/MyOredrs';
+import PageNotFound from './pages/PageNotFound';
 function App() {
   return (
     <Router>
@@ -40,6 +41,7 @@ function App() {
           </Route>
           <Route path='/products/:id' element={<ProductDetails/>}/>
           
+        <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
       <ToastContainer />
