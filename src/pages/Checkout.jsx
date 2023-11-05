@@ -1,9 +1,9 @@
-import { Formik, useFormik } from "formik";
+import {  useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder, emptyCart, getOrder, getcartItem } from "../features/auth/authSlice";
+import { createOrder } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
 import cartService from "../features/cart/cartService";
@@ -21,7 +21,7 @@ let schema = Yup.object().shape({
 const Checkout = () => {
   const navigate =useNavigate()
   const dispatch = useDispatch();
-  const {  user, isLoading, isError } = useSelector((state) => state.auth);
+  const {  user, isLoading } = useSelector((state) => state.auth);
   //get cart items from store
   const { cartItems } = useSelector((state) => state?.carts);
   //calculate total price

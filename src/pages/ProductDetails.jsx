@@ -9,9 +9,7 @@ import { getSingleProduct } from "../features/product/productSlice";
 import Spinner from "../components/Spinner";
 import ProductSlider from "../components/ProductSlider";
 import { toast } from "react-toastify";
-import { AddToCart, getcartItem } from "../features/auth/authSlice";
 import cartService from "../features/cart/cartService";
-import Swal from "sweetalert2";
 function ProductDetails() {
   //dispatch
   const dispatch = useDispatch();

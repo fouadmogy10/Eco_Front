@@ -1,4 +1,3 @@
-import { BiLogOut } from "react-icons/bi";
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -8,21 +7,13 @@ import {
   FaEnvelope,
   FaPhone,
   FaRegHeart,
-  FaSearchengin,
   FaUser,
 } from "react-icons/fa6";
 import logo from "../../assets/images/favicon.webp";
 import "./Header.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getOrder,
-  getWishlist,
-  getcartItem,
-  logout,
-  reset,
-} from "../../features/auth/authSlice";
-import { BounceLoader } from "react-spinners";
+import { getOrder, getWishlist, logout } from "../../features/auth/authSlice";
 import { Typeahead } from "react-bootstrap-typeahead";
 import {
   getProducts,
@@ -37,13 +28,9 @@ function Header() {
   const navigate = useNavigate();
   const [paginate, setPaginate] = useState(true);
   const [ProdOpt, setProdOpt] = useState([]);
-  const { isLoading, Wishlist, user } = useSelector(
-    (state) => state.auth
-  );
+  const { Wishlist, user } = useSelector((state) => state.auth);
   const { products } = useSelector((state) => state.products);
   let Wishliststate = Wishlist.wishlist ? Wishlist.wishlist : [];
-
-
 
   useEffect(() => {
     let data = [];
@@ -54,7 +41,6 @@ function Header() {
     setProdOpt(data);
   }, [products]);
 
-
   //get cart items from store
   const { cartItems } = useSelector((state) => state?.carts);
   //calculate total price
@@ -64,8 +50,8 @@ function Header() {
   }, 0);
   useEffect(() => {
     dispatch(getProducts());
-    dispatch(getBrands())
-    dispatch(getCategories())
+    dispatch(getBrands());
+    dispatch(getCategories());
   }, []);
 
   useEffect(() => {
@@ -74,8 +60,8 @@ function Header() {
       dispatch(cartService.getCartItemsFromLocalStorageAction());
       dispatch(getOrder());
     }
-  }, [user?.userInfo?.token])
-  
+  }, [user?.userInfo?.token]);
+
   return (
     <>
       <div className="super_container">
@@ -90,11 +76,11 @@ function Header() {
                     </div>
                     +91 9823 132 111
                   </div>
-                  <div className="top_bar_contact_item  me-2" >
+                  <div className="top_bar_contact_item  me-2">
                     <a href="mailto:fastsales@gmail.com">
-                    <div className="top_bar_icon">
-                      <FaEnvelope color="#e74821" />
-                    </div>
+                      <div className="top_bar_icon">
+                        <FaEnvelope color="#e74821" />
+                      </div>
                       contact@gmail.com
                     </a>
                   </div>
@@ -107,14 +93,13 @@ function Header() {
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
-                            style={{
-                              
-                            }}
+                            style={{}}
                           >
                             <div className="user_icon">
                               <FaUser color="#e74821" />
                             </div>
-                            {user?.userInfo?.firstname} {user?.userInfo?.lastname}
+                            {user?.userInfo?.firstname}{" "}
+                            {user?.userInfo?.lastname}
                           </button>
                           <ul className="dropdown-menu bg-dark text-center">
                             <li>
@@ -122,7 +107,7 @@ function Header() {
                                 className="dropdown-item  p-1"
                                 to="/profile"
                                 style={{
-                                  fontSize:"16px"
+                                  fontSize: "16px",
                                 }}
                               >
                                 My Profile
@@ -133,7 +118,7 @@ function Header() {
                                 className="dropdown-item  p-1"
                                 to="/my-order"
                                 style={{
-                                  fontSize:"16px"
+                                  fontSize: "16px",
                                 }}
                               >
                                 My Orders
@@ -153,7 +138,6 @@ function Header() {
                                 }}
                               >
                                 Log Out{" "}
-                               
                               </button>
                             </li>
                           </ul>

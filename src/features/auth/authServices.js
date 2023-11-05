@@ -36,44 +36,6 @@ const getWishlist = async () => {
   return response.data;
 };
 
-const getcartItem = async () => {
-    const config = {
-    headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-    }
-}
-  const response = await base_url.get(`user/cart/`, config);
-
-  return response.data;
-};
-const AddToCart = async (data) => {
-    const config = {
-    headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-    }
-}
-  const response = await base_url.post(`user/cart/`, data, config);
-  return response.data;
-};
-const removeFromCart = async (id) => {
-    const config = {
-    headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-    }
-}
-  const response = await base_url.delete(`user/cart/${id}` , config);
-  return response.data;
-};
-const updateQTY = async (cartDetails) => {
-    const config = {
-    headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-    }
-}
-  const response = await base_url.put(`user/updateCart/${cartDetails.id}/${cartDetails.newqty}` ,"", config);
-  return response.data;
-};
-
 const addToWishlist = async (prodId) => {
     const config = {
     headers: {
@@ -101,23 +63,14 @@ const getOrder = async () => {
   const response = await base_url.get(`user/get-orders`,config);
   return response.data;
 };
-const emptyCart = async () => {
-    const config = {
-    headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-    }
-}
-  const response = await base_url.get(`user/empty-cart`,config);
-  return response.data;
-};
+
 
 const authService = {
   login,updateUser,
   register,
   logout,
-  getWishlist,
-  getcartItem,
-  AddToCart,removeFromCart,updateQTY,addToWishlist,createOrder,getOrder,emptyCart
+  getWishlist
+  ,addToWishlist,createOrder,getOrder
 };
 
 export default authService;

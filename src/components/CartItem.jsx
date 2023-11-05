@@ -1,9 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
-import { getcartItem, updateQTY } from "../features/auth/authSlice";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import cartService from "../features/cart/cartService";
 function CartItem({ data, color, quantity }) {
   const dispatch = useDispatch();
