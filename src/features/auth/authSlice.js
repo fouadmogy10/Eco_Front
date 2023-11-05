@@ -261,7 +261,6 @@ export const authSlice = createSlice({
         state.updatedUser = action.payload;
         if (state.updatedUser) {
           let curentUser = JSON.parse(localStorage.getItem("user"));
-          // console.log(state.updatedUser);
           let newUser = {
             _id: curentUser._id,
             firstname: action.payload.firstname,

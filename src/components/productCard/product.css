@@ -135,7 +135,7 @@
   
   .product .product-body .product-btns>button .tooltipp {
     position: absolute;
-    bottom: 100%;
+    top: 100%;
     left: 50%;
     -webkit-transform: translate(-50%, -15px);
     -ms-transform: translate(-50%, -15px);

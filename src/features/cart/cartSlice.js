@@ -1,150 +1,93 @@
-import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import colorService from "./colorService";
-
-export const getColors = createAsyncThunk(
-  "color/get-colors",
-  async (thunkAPI) => {
-    try {
-      return await colorService.getColors();
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const createColor = createAsyncThunk(
-  "color/create-color",
-  async (colorData, thunkAPI) => {
-    try {
-      return await colorService.createColor(colorData);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const getAColor = createAsyncThunk(
-  "color/get-color",
-  async (id, thunkAPI) => {
-    try {
-      return await colorService.getColor(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const updateAColor = createAsyncThunk(
-  "color/update-color",
-  async (color, thunkAPI) => {
-    try {
-      return await colorService.updateColor(color);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const deleteAColor = createAsyncThunk(
-  "color/delete-color",
-  async (id, thunkAPI) => {
-    try {
-      return await colorService.deleteColor(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-export const resetState = createAction("Reset_all");
-
+import { createSlice } from "@reduxjs/toolkit";
+import cartService from "./cartService";
+//initalsState
 const initialState = {
-  colors: [],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: "",
+  cartItems: [],
+  loading: false,
+  error: null,
+  isAdded: false,
+  isUpdated: false,
+  isDelete: false,
 };
-export const colorSlice = createSlice({
-  name: "colors",
+
+//slice
+const cartSlice = createSlice({
+  name: "cart",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(getColors.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getColors.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.colors = action.payload;
-      })
-      .addCase(getColors.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-      })
-      .addCase(createColor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createColor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.createdColor = action.payload;
-      })
-      .addCase(createColor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-      })
-      .addCase(updateAColor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateAColor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.updatedColor = action.payload;
-      })
-      .addCase(updateAColor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-      })
-      .addCase(getAColor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getAColor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.colorName = action.payload.title;
-      })
-      .addCase(getAColor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-      })
-      .addCase(deleteAColor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteAColor.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.isSuccess = true;
-        state.deletedColor = action.payload.title;
-      })
-      .addCase(deleteAColor.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-      })
-      .addCase(resetState, () => initialState);
+    //add to cart
+    builder.addCase(cartService.addOrderToCartaction.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      cartService.addOrderToCartaction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload;
+        state.isAdded = true;
+      }
+    );
+    builder.addCase(
+      cartService.addOrderToCartaction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.cartItems = null;
+        state.isAdded = false;
+        state.error = action.payload;
+      }
+    );
+    //fetch cart items
+    builder.addCase(
+      cartService.getCartItemsFromLocalStorageAction.pending,
+      (state) => {
+        state.loading = true;
+      }
+    );
+    builder.addCase(
+      cartService.getCartItemsFromLocalStorageAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload;
+        state.isAdded = true;
+      }
+    );
+    builder.addCase(
+      cartService.getCartItemsFromLocalStorageAction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.cartItems = null;
+        state.isAdded = false;
+        state.error = action.payload;
+      }
+    );
+    //empty cart items
+    builder.addCase(
+      cartService.EmptyCart.pending,
+      (state) => {
+        state.loading = true;
+      }
+    );
+    builder.addCase(
+      cartService.EmptyCart.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.cartItems = [];
+        state.isAdded = true;
+      }
+    );
+    builder.addCase(
+      cartService.EmptyCart.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.cartItems = null;
+        state.isAdded = false;
+        state.error = action.payload;
+      }
+    );
   },
 });
-export default colorSlice.reducer;
+
+//generate the reducer
+const cartReducer = cartSlice.reducer;
+
+export default cartReducer;

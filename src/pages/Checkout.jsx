@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createOrder, emptyCart, getOrder, getcartItem } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
+import cartService from "../features/cart/cartService";
 
 let schema = Yup.object().shape({
   firstname: Yup.string().required("First Name is Required"),
@@ -20,19 +21,14 @@ let schema = Yup.object().shape({
 const Checkout = () => {
   const navigate =useNavigate()
   const dispatch = useDispatch();
-  const { cart, user, isLoading, isError } = useSelector((state) => state.auth);
-  let cartState = cart ? cart : [];
-  const [total, settotal] = useState(0);
-  useEffect(() => {
-    let sum = 0;
-    for (let index = 0; index < cart?.length; index++) {
-      sum = sum + Number(cart[index].quantity) * cart[index].productId.price;
-      settotal(sum);
-    }
-    if (cart.length == 0) {
-      settotal(0);
-    }
-  }, [cart]);
+  const {  user, isLoading, isError } = useSelector((state) => state.auth);
+  //get cart items from store
+  const { cartItems } = useSelector((state) => state?.carts);
+  //calculate total price
+  let sumTotalPrice = 0;
+  sumTotalPrice = cartItems?.reduce((acc, current) => {
+    return acc + current?.totalPrice;
+  }, 0);
   const formik = useFormik({
     initialValues: {
       firstname: user?.userInfo?.firstname,
@@ -49,12 +45,12 @@ const Checkout = () => {
       await dispatch(
         createOrder({
           shippingInfo: values,
-          cart: cart,
-          totalPrice: total,
+          cart: cartItems,
+          totalPrice: sumTotalPrice,
         })
       );
       formik.resetForm();
-      dispatch(emptyCart());
+      dispatch(cartService.EmptyCart());
       navigate("/")
     },
 
@@ -75,7 +71,7 @@ const Checkout = () => {
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-muted">Your cart</span>
               <span className="badge badge-secondary badge-pill text-dark">
-                {cart.length}
+                {cartItems.length}
               </span>
             </h4>
             <ul className="list-group mb-3">
@@ -83,7 +79,7 @@ const Checkout = () => {
                 <div>
                   <h6 className="my-0">SubTotal</h6>
                 </div>
-                <span className="text-muted">${total}</span>
+                <span className="text-muted">${sumTotalPrice}</span>
               </li>
               <li className="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
@@ -94,24 +90,11 @@ const Checkout = () => {
 
               <li className="list-group-item d-flex justify-content-between">
                 <span>Total (USD)</span>
-                <strong>${total + 5}</strong>
+                <strong>${sumTotalPrice + 5}</strong>
               </li>
             </ul>
 
-            <form className="card p-2">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Promo code"
-                />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-warning text-white">
-                    Redeem
-                  </button>
-                </div>
-              </div>
-            </form>
+           
           </Col>
           <Col md={8} className="order-md-1 mb-4">
             <h4 className="mb-3">Billing address</h4>

@@ -12,15 +12,16 @@ function OffCanvas({ data,name, ...props }) {
   const [maxP, setmaxP] = useState(0);
   const [Sort, setSort] = useState("");
   const [Cat, setCat] = useState("");
-  const [brand, setbrand] = useState("");
+  const [Brand, setbrand] = useState("");
   const [Tag, setTag] = useState("");
+  
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { products } = useSelector((state) => state.products);
   useEffect(() => {
-    dispatch(getProducts({minP, maxP, Sort, Cat, brand, Tag}));
-  }, [minP, maxP, Sort, Cat, brand, Tag]);
+    dispatch(getProducts({minP, maxP, Sort, Cat, Brand, Tag}));
+  }, [minP, maxP, Sort, Cat, Brand, Tag]);
 
   return (
     <>
@@ -48,6 +49,7 @@ function OffCanvas({ data,name, ...props }) {
                           id={"all"}
                           name="category"
                           onChange={(e) => setCat(e.target.value)}
+                          checked={Cat === ""}
                         />
                         <label
                           htmlFor={"all"}
@@ -68,6 +70,7 @@ function OffCanvas({ data,name, ...props }) {
                           id={category.title}
                           name="category"
                           onChange={(e) => setCat(e.target.value)}
+                          checked={Cat === category.title}
                         />
                         <label
                           htmlFor={category.title}
@@ -92,11 +95,13 @@ function OffCanvas({ data,name, ...props }) {
                           id={"allB"}
                           name="brand"
                           onChange={(e) => setbrand(e.target.value)}
+                          checked={Brand === ""}
                         />
                         <label
                           htmlFor={"allB"}
                           className="form-check-label"
                           onClick={() => setbrand("")}
+                          
                         >
                           All
                         </label>
@@ -112,6 +117,7 @@ function OffCanvas({ data,name, ...props }) {
                           id={brand.title}
                           name="brand"
                           onChange={(e) => setbrand(e.target.value)}
+                          checked={Brand == brand.title}
                         />
                         <label
                           htmlFor={brand.title}
@@ -134,8 +140,12 @@ function OffCanvas({ data,name, ...props }) {
                       <div className="form-check" key={idx}>
                         <label
                           htmlFor={tag}
-                          className="form-check-label bg-light px-2 rounded-2 py-1"
+                          className={"form-check-label bg-light px-2 rounded-2 py-1 " }
+                          style={{
+                            border:`${Tag === tag ? "1px solid #e74821ff ":""}`
+                          }}
                           onClick={() => setTag(tag)}
+
                         >
                           {tag =="" ? "All" :tag}
                           

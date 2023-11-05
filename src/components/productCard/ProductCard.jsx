@@ -1,3 +1,5 @@
+import { BsFillCartPlusFill } from "react-icons/bs"; 
+import { BiCartAdd } from "react-icons/bi"; 
 import { BsFillHeartbreakFill } from "react-icons/bs";
 import { AiFillStar, AiOutlineStar, AiTwotoneHeart } from "react-icons/ai";
 import React, { useEffect } from "react";
@@ -9,7 +11,9 @@ import { addToWishlist } from "../../features/auth/authSlice";
 import { Spinner } from "react-bootstrap";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import cartService from "../../features/cart/cartService";
 function ProductCard({ ke, data, id, tag }) {
+  const [selectedColor, setSelectedColor] = useState("");
   const [loader, setloader] = useState();
   const dispatch = useDispatch();
   const { user, Wishlist } = useSelector((state) => state.auth);
@@ -34,6 +38,27 @@ function ProductCard({ ke, data, id, tag }) {
       toast.warn("Please Login ");
     }
   };
+  const addToCartHandler = (data) => {
+
+    //check if color/size selected
+    if (selectedColor == "") {
+      return toast.error("Please select product color")
+    }
+
+    const cartItem = {
+      _id: data?._id,
+      name: data?.title,
+      qty: 1,
+      price: data?.price,
+      description: data?.description,
+      color: selectedColor,
+      image: data?.images[0].url,
+      totalPrice: data?.price,
+    };
+    dispatch(cartService.addOrderToCartaction(cartItem));
+   
+    return dispatch(cartService.getCartItemsFromLocalStorageAction());
+  };
   return (
     <div className="product" key={ke}>
       <Link to={`/products/${id}`}>
@@ -41,7 +66,7 @@ function ProductCard({ ke, data, id, tag }) {
         <img
           loading="lazy"
           alt={data?.title}
-          src={data?.images[0].url}
+          src={data?.images[0]?.url}
           style={{
             objectFit: "contain",
             aspectRatio: 1,
@@ -72,6 +97,24 @@ function ProductCard({ ke, data, id, tag }) {
             />
           ))}
         </div>
+        <ul className="colors ps-0 my-2 justify-content-center">
+                  {window.location.pathname !== "/wishlist" 
+                    ? data?.color?.map((item, idx) => {
+                        return (
+                          <li
+                            onClick={() => setSelectedColor(item?.title)}
+                            className={
+                              selectedColor == item?.title ? "active" : null
+                            }
+                            role="button"
+                            key={Math.random()}
+                            style={{ backgroundColor: `${item?.title}` }}
+                          ></li>
+                        );
+                      })
+                    : null}
+                </ul>
+
         <div className="product-btns">
           <button
             aria-label="add-to-wishlist"
@@ -104,6 +147,13 @@ function ProductCard({ ke, data, id, tag }) {
             </Link>
             <span className="tooltipp">quick view</span>
           </button>
+          {
+            window.location.pathname !== "/wishlist" &&
+          <button aria-label="quick-view" className="quick-view" onClick={()=>addToCartHandler(data)}>
+              <BsFillCartPlusFill />
+            <span className="tooltipp">Add To Cart</span>
+          </button>
+          }
         </div>
       </div>
     </div>

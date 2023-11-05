@@ -3,7 +3,7 @@ import RingLoader from "react-spinners/RingLoader";
 
 function Spinner() {
   return (
-    <section className="spinner d-flex align-items-center justify-content-center">
+    <section className="spinner d-flex position-fixed align-items-center justify-content-center">
     <RingLoader size={80} color="#36d7b7" />
 </section>
   )

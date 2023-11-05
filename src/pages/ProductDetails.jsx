@@ -10,46 +10,77 @@ import Spinner from "../components/Spinner";
 import ProductSlider from "../components/ProductSlider";
 import { toast } from "react-toastify";
 import { AddToCart, getcartItem } from "../features/auth/authSlice";
+import cartService from "../features/cart/cartService";
+import Swal from "sweetalert2";
 function ProductDetails() {
-  const { id } = useParams();
+  //dispatch
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [selectedColor, setSelectedColor] = useState("");
+  const [QTY, setQTY] = useState(0);
   const [color, setcolor] = useState(null);
-  const [QTY, setQTY] = useState(1);
-  const [Added, setAdded] = useState(false);
+
+  //get id from params
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  //get data from store
   const { Sproduct, isLoading, RatingLoading } = useSelector(
     (state) => state.products
   );
   const { isLoadingCart, cart, user } = useSelector((state) => state.auth);
+
   useEffect(() => {
     dispatch(getSingleProduct(id));
-    if (cart.some(item =>item.productId._id  == id )==true) {
-      setAdded(true)
-    }
+    // if (cart.some((item) => item.productId._id == id) == true) {
+    //   setAdded(true);
+    // }
   }, [id]);
   useEffect(() => {
     window.scroll(0, 0);
   }, []);
-  const addToCart = async (id) => {
-    if (user?.userInfo?.token) {
-      if (color == null) {
-        toast.warn("Please Choose Color");
-        return false;
-      } else {
-        await dispatch(
-          AddToCart({
-            productId: id,
-            color: color,
-            price: Sproduct?._price,
-            quantity: QTY,
-          })
-        );
-        navigate("/cart");
-      }
-    } else {
-      navigate("/login")
+
+  //Get cart items
+  useEffect(() => {
+    dispatch(cartService.getCartItemsFromLocalStorageAction());
+  }, []);
+  //get data from store
+  const { cartItems, loading } = useSelector((state) => state?.carts);
+  const productExists = cartItems?.find((item) => {
+    return item?._id == Sproduct?._id  
+  });
+
+
+  //Add to cart handler
+  //Add to cart handler
+  const addToCartHandler = () => {
+    //check if product is in cart
+    // if (productExists) {
+    //   return Swal.fire({
+    //     icon: "error",
+    //     title: "Oops...",
+    //     text: "This product is already in cart",
+    //   });
+    // }
+    //check if color/size selected
+    if (selectedColor == "") {
+      return toast.error("Please select product color")
     }
+
+    const cartItem = {
+      _id: Sproduct?._id,
+      name: Sproduct?.title,
+      qty: 1,
+      price: Sproduct?.price,
+      description: Sproduct?.description,
+      color: selectedColor,
+      image: Sproduct?.images[0].url,
+      totalPrice: Sproduct?.price,
+    };
+    dispatch(cartService.addOrderToCartaction(cartItem));
+   
+    return dispatch(cartService.getCartItemsFromLocalStorageAction());
   };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -79,52 +110,39 @@ function ProductDetails() {
                   className="lead mb-0"
                   dangerouslySetInnerHTML={{ __html: Sproduct?.description }}
                 ></p>
-                {!Added && (
-                  <ul className="colors ps-0 mb-2">
-                    {Sproduct.color
-                      ? Sproduct.color.map((item, idx) => {
+                <ul className="colors ps-0 mb-2">
+                  {Sproduct.color
+                    ? Sproduct.color.map((item, idx) => {
                         return (
                           <li
-                            onClick={() => setcolor(item._id)}
-                            className={color == item._id ? "active" : null}
+                            onClick={() => setSelectedColor(item?.title)}
+                            className={
+                              selectedColor == item?.title ? "active" : null
+                            }
                             role="button"
                             key={Math.random()}
-                            style={{ backgroundColor: `${item.title}` }}
+                            style={{ backgroundColor: `${item?.title}` }}
                           ></li>
                         );
-                        })
-                      : null}
-                  </ul>
-                )}
+                      })
+                    : null}
+                </ul>
                 <div className="d-flex">
-                  {Added === false && (
-                    <input
-                      className="form-control text-center p-2 me-3"
-                      id="inputQuantity"
-                      type="number"
-                      min={0}
-                      value={QTY}
-                      onChange={(e) => setQTY(e.target.value)}
-                      style={{ maxWidth: "4rem" }}
-                    />
-                  )}
-
                   <button
                     className="btn btn-outline-dark flex-shrink-0"
                     type="button"
-                    onClick={() => {
-                      Added ? navigate("/cart") : addToCart(Sproduct?._id);
-                    }}
+                    onClick={() => addToCartHandler()}
+                    disabled={loading}
                   >
                     {" "}
-                    {isLoadingCart ? (
+                    {loading ? (
                       <SP animation="border" role="status">
                         <span className="visually-hidden">Loading...</span>
                       </SP>
                     ) : (
                       <>
                         <FaCartPlus className="mx-2" />
-                        {Added ? " Go to cart" : " Add to cart"}
+                        {" Add to cart"}
                       </>
                     )}
                   </button>

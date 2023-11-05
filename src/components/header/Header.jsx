@@ -30,19 +30,20 @@ import {
 } from "../../features/product/productSlice";
 import { getBrands } from "../../features/brand/brandSlice";
 import { getCategories } from "../../features/pcategory/pcategorySlice";
+import cartService from "../../features/cart/cartService";
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [paginate, setPaginate] = useState(true);
   const [ProdOpt, setProdOpt] = useState([]);
-  const { isLoading, Wishlist, cart, user } = useSelector(
+  const { isLoading, Wishlist, user } = useSelector(
     (state) => state.auth
   );
   const { products } = useSelector((state) => state.products);
   let Wishliststate = Wishlist.wishlist ? Wishlist.wishlist : [];
-  let cartState = cart ? cart : [];
-  const [total, settotal] = useState(0);
+
+
 
   useEffect(() => {
     let data = [];
@@ -53,17 +54,14 @@ function Header() {
     setProdOpt(data);
   }, [products]);
 
-  useEffect(() => {
-    let sum = 0;
-    for (let index = 0; index < cart?.length; index++) {
-      sum = sum + Number(cart[index].quantity) * cart[index].productId.price;
-      settotal(sum);
-    }
-    if (cart.length == 0) {
-      settotal(0);
-    }
-  }, [cart]);
 
+  //get cart items from store
+  const { cartItems } = useSelector((state) => state?.carts);
+  //calculate total price
+  let sumTotalPrice = 0;
+  sumTotalPrice = cartItems?.reduce((acc, current) => {
+    return acc + current?.totalPrice;
+  }, 0);
   useEffect(() => {
     dispatch(getProducts());
     dispatch(getBrands())
@@ -73,7 +71,7 @@ function Header() {
   useEffect(() => {
     if (user?.userInfo?.token) {
       dispatch(getWishlist());
-      dispatch(getcartItem());
+      dispatch(cartService.getCartItemsFromLocalStorageAction());
       dispatch(getOrder());
     }
   }, [user?.userInfo?.token])
@@ -254,12 +252,12 @@ function Header() {
                           <div className="cart_icon">
                             <FaCartFlatbed size={35} />
                             <div className="cart_count">
-                              <span>{cartState.length}</span>
+                              <span>{cartItems.length}</span>
                             </div>
                           </div>
                           <div className="cart_content">
                             <div className="cart_text">Cart</div>
-                            <div className="cart_price">${total}</div>
+                            <div className="cart_price">${sumTotalPrice}</div>
                           </div>
                         </div>
                       </Link>
