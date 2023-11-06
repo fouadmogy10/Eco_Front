@@ -22,6 +22,7 @@ function OffCanvas({ data,name, ...props }) {
   useEffect(() => {
     dispatch(getProducts({minP, maxP, Sort, Cat, Brand, Tag}));
   }, [minP, maxP, Sort, Cat, Brand, Tag]);
+  console.log(Brand);
 
   return (
     <>
