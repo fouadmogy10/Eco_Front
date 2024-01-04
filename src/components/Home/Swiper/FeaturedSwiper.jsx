@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, FreeMode, Navigation, Pagination } from "swiper/modules";
 import ProductCard from "../../productCard/ProductCard";
 import WishlistHook from "../../../Hooks/WishlistHook";
 const FeaturedSwiper = ({products,PLoading}) => {
@@ -9,6 +9,7 @@ const FeaturedSwiper = ({products,PLoading}) => {
     slidesPerView={1}
     spaceBetween={30}
     loop={true}
+    freeMode={true}
     autoplay={{
       delay: 1500,
       disableOnInteraction: true,
@@ -31,7 +32,7 @@ const FeaturedSwiper = ({products,PLoading}) => {
         spaceBetween: 50,
       },
     }}
-    modules={[Navigation, Autoplay]}
+    modules={[Navigation, Autoplay,FreeMode]}
     className="mySwiper"
   >
     {PLoading ? (

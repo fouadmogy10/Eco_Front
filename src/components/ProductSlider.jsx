@@ -36,13 +36,20 @@ export default function ProductSlider({ data }) {
           data.map((item, idx) => {
             return (
               <SwiperSlide key={item.public_id}>
+                <div className=""
+                style={{
+                  height:"450px",
+                  minHeight:"450px"
+                }}
+                >
                 <img 
                   loading="lazy"
                   className="card-img-top mb-5 mb-md-0"
                   src={item.url}
                   key={idx}
-                  style={{objectFit:"contain",minHeight:"400px"}}
+                  style={{objectFit:"contain",}}
                 />
+                </div>
               </SwiperSlide>
             );
           })}
