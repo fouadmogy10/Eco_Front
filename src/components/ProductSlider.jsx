@@ -47,7 +47,7 @@ export default function ProductSlider({ data }) {
                   className="card-img-top mb-5 mb-md-0"
                   src={item.url}
                   key={idx}
-                  style={{objectFit:"contain",}}
+                  style={{objectFit:"contain",width:"100%",height:"100%"}}
                 />
                 </div>
               </SwiperSlide>
