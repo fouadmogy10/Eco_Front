@@ -11,6 +11,7 @@ import { Spinner } from "react-bootstrap";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import cartService from "../../features/cart/cartService";
+import Img from "../lazyLoadImage/Img";
 function ProductCard({ ke, data, id, tag }) {
   const [selectedColor, setSelectedColor] = useState("");
   const [loader, setloader] = useState();
@@ -60,7 +61,7 @@ function ProductCard({ ke, data, id, tag }) {
     <div className="product" key={ke}>
       <Link to={`/products/${id}`}>
         <div className="product-img">
-          <img
+          {/* <img
             loading="lazy"
             alt={data?.title}
             src={data?.images[0]?.url}
@@ -68,6 +69,12 @@ function ProductCard({ ke, data, id, tag }) {
               objectFit: "contain",
               aspectRatio: 1,
             }}
+          /> */}
+          <Img
+          alt={data?.title}
+          // className={}
+          
+          src={data?.images[0]?.url}
           />
           <div className="product-label">
             <span className="new">{tag}</span>

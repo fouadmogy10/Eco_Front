@@ -31,7 +31,10 @@
     background-color: white;
   }
   
-  .product .product-img>img {
+  .product .product-img span{
+    display: flex !important;
+  }
+  .product .product-img span>img {
     width: 100%;
   }
   
