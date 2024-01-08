@@ -38,7 +38,9 @@ const FeaturedSwiper = ({products,PLoading}) => {
     {PLoading ? (
       <Skeleton />
     ) : products.length > 0 ? (
-      products.map((item, idx) => {
+     <>
+     {
+       products.map((item, idx) => {
         if (item.tags[0] == "featured" || item.tags[0] == "special")  {
           return (
             <SwiperSlide key={idx}>
@@ -54,6 +56,27 @@ const FeaturedSwiper = ({products,PLoading}) => {
           );
         }
       })
+      
+     }
+     {
+       products.map((item, idx) => {
+        if (item.tags[0] == "featured" || item.tags[0] == "special")  {
+          return (
+            <SwiperSlide key={idx}>
+              <ProductCard
+                id={item?._id}
+                data={item}
+                key={idx}
+                ke={item._id}
+                tag={item?.tags[0]}
+                wish={favprod.length > 0 ? favprod : []}
+              />
+            </SwiperSlide>
+          );
+        }
+      })
+     }
+     </>
     ) : null}
   </Swiper>
   )

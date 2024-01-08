@@ -12,6 +12,7 @@
   transition: all .5s ease-in-out;
 }
 .product {
+  border-radius: 10px;
     position: relative;
     margin: 15px 0px;
     /* -webkit-box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED; */
@@ -27,7 +28,7 @@
   
   .product .product-img {
     position: relative;
-    background-color: transparent;
+    background-color: white;
   }
   
   .product .product-img>img {
@@ -61,7 +62,7 @@
   .product .product-body {
     position: relative;
     padding: 15px;
-    background-color: #FFF;
+    background-color: #ececec;
     text-align: center;
     z-index: 20;
   }
