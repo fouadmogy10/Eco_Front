@@ -6,7 +6,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../features/product/productSlice";
 
-function OffCanvas({ data,name, ...props }) {
+function OffCanvas({ data, name, ...props }) {
   const dispatch = useDispatch();
   const [minP, setminP] = useState(0);
   const [maxP, setmaxP] = useState(0);
@@ -14,16 +14,20 @@ function OffCanvas({ data,name, ...props }) {
   const [Cat, setCat] = useState("");
   const [Brand, setbrand] = useState("");
   const [Tag, setTag] = useState("");
-  
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { products } = useSelector((state) => state.products);
   useEffect(() => {
-    dispatch(getProducts({minP, maxP, Sort, Cat, Brand, Tag}));
-  }, [minP, maxP, Sort, Cat, Brand, Tag]);
-  console.log(Brand);
-
+    dispatch(getProducts({ minP, maxP, Sort, Cat, Brand, Tag }));
+  }, [Sort, Cat, Brand, Tag]);
+  const searchWithPrice = () => {
+    if (minP >= 0 &&minP!==""  && maxP !=="" && maxP !== 0 && minP < maxP) {
+      dispatch(getProducts({ minP, maxP, Sort, Cat, Brand, Tag }));
+    }
+  };
+  console.log(minP);
   return (
     <>
       <div className="col-3">
@@ -42,24 +46,24 @@ function OffCanvas({ data,name, ...props }) {
             <div className="filter-card mb-3">
               <h3 className="filter-title">shop by category</h3>
               <div>
-              <div className="form-check" key={"54asasa"}>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value={""}
-                          id={"all"}
-                          name="category"
-                          onChange={(e) => setCat(e.target.value)}
-                          checked={Cat === ""}
-                        />
-                        <label
-                          htmlFor={"all"}
-                          className="form-check-label"
-                          onClick={() => setCat("")}
-                        >
-                          All
-                        </label>
-                      </div>
+                <div className="form-check" key={"54asasa"}>
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    value={""}
+                    id={"all"}
+                    name="category"
+                    onChange={(e) => setCat(e.target.value)}
+                    checked={Cat === ""}
+                  />
+                  <label
+                    htmlFor={"all"}
+                    className="form-check-label"
+                    onClick={() => setCat("")}
+                  >
+                    All
+                  </label>
+                </div>
                 {data.pCategories &&
                   data.pCategories.map((category, idx) => {
                     return (
@@ -88,25 +92,24 @@ function OffCanvas({ data,name, ...props }) {
             <div className="filter-card mb-3">
               <h3 className="filter-title">shop by Brand</h3>
               <div>
-              <div className="form-check" key={"54asasa"}>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value={""}
-                          id={"allB"}
-                          name="brand"
-                          onChange={(e) => setbrand(e.target.value)}
-                          checked={Brand === ""}
-                        />
-                        <label
-                          htmlFor={"allB"}
-                          className="form-check-label"
-                          onClick={() => setbrand("")}
-                          
-                        >
-                          All
-                        </label>
-                      </div>
+                <div className="form-check" key={"54asasa"}>
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    value={""}
+                    id={"allB"}
+                    name="brand"
+                    onChange={(e) => setbrand(e.target.value)}
+                    checked={Brand === ""}
+                  />
+                  <label
+                    htmlFor={"allB"}
+                    className="form-check-label"
+                    onClick={() => setbrand("")}
+                  >
+                    All
+                  </label>
+                </div>
                 {data.brands &&
                   data.brands.map((brand, idx) => {
                     return (
@@ -135,25 +138,26 @@ function OffCanvas({ data,name, ...props }) {
             <div className="filter-card mb-3">
               <h3 className="filter-title">shop by tags</h3>
               <div className="d-flex">
-                {
-                  ["",'popular', 'special', 'featured'].map((tag, idx) => {
-                    return (
-                      <div className="form-check" key={idx}>
-                        <label
-                          htmlFor={tag}
-                          className={"form-check-label bg-light px-2 rounded-2 py-1 " }
-                          style={{
-                            border:`${Tag === tag ? "1px solid #e74821ff ":""}`
-                          }}
-                          onClick={() => setTag(tag)}
-
-                        >
-                          {tag =="" ? "All" :tag}
-                          
-                        </label>
-                      </div>
-                    );
-                  })}
+                {["", "popular", "special", "featured"].map((tag, idx) => {
+                  return (
+                    <div className="form-check" key={idx}>
+                      <label
+                        htmlFor={tag}
+                        className={
+                          "form-check-label bg-light px-2 rounded-2 py-1 "
+                        }
+                        style={{
+                          border: `${
+                            Tag === tag ? "1px solid #e74821ff " : ""
+                          }`,
+                        }}
+                        onClick={() => setTag(tag)}
+                      >
+                        {tag == "" ? "All" : tag}
+                      </label>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div className="filter-card mb-3">
@@ -179,10 +183,13 @@ function OffCanvas({ data,name, ...props }) {
                     placeholder="To"
                     value={maxP}
                     type="number"
-                    min={0}
+                    min={50}
                     onChange={(e) => setmaxP(e.target.value)}
                   />
                 </Col>
+                <Button className="btn-def my-3  " onClick={searchWithPrice}>
+                  Search By Price
+                </Button>
               </div>
             </div>
           </Offcanvas.Body>
@@ -213,7 +220,12 @@ export default function Filter(data) {
   return (
     <>
       {["start"].map((placement, idx) => (
-        <OffCanvas data={data.data} key={idx} placement={placement} name={placement} />
+        <OffCanvas
+          data={data.data}
+          key={idx}
+          placement={placement}
+          name={placement}
+        />
       ))}
     </>
   );
