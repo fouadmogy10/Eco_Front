@@ -23,11 +23,10 @@ function OffCanvas({ data, name, ...props }) {
     dispatch(getProducts({ minP, maxP, Sort, Cat, Brand, Tag }));
   }, [Sort, Cat, Brand, Tag]);
   const searchWithPrice = () => {
-    if (minP >= 0 &&minP!==""  && maxP !=="" && maxP !== 0 && minP < maxP) {
+    if (minP >= 0 && minP !== "" && maxP !== "" && maxP !== 0 && minP < maxP) {
       dispatch(getProducts({ minP, maxP, Sort, Cat, Brand, Tag }));
     }
   };
-  console.log(minP);
   return (
     <>
       <div className="col-3">

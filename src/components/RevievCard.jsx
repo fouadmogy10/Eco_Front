@@ -1,7 +1,7 @@
+import moment from "moment";
 import React from "react";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
-import ReactStars from "react-rating-stars-component";
+import { AiFillStar } from "react-icons/ai";
+
 function RevievCard({ data }) {
   return (
     <div className="card  mb-3">
@@ -19,17 +19,7 @@ function RevievCard({ data }) {
             </div>
             <div className="d-flex justify-content-end align-items-center">
               <div className="small mb-0" style={{ color: "#aaa" }}>
-                {/* <ReactStars
-                  count={5}
-                  value={data.star}
-                  size={24}
-                  isHalf={true}
-                  edit={false}
-                  emptyIcon={<AiOutlineStar />}
-                  halfIcon={<FaStarHalfAlt />}
-                  fullIcon={<FaStar />}
-                  activeColor="#ffd700"
-                /> */}
+                
 
                 {[0, 1, 2, 3, 4].map((rating) => (
                   <AiFillStar

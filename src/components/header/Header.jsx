@@ -17,7 +17,7 @@ import { getOrder, getWishlist, logout } from "../../features/auth/authSlice";
 import { Typeahead } from "react-bootstrap-typeahead";
 import {
   getProducts,
-  getSingleProduct,
+  // getSingleProduct,
 } from "../../features/product/productSlice";
 import { getBrands } from "../../features/brand/brandSlice";
 import { getCategories } from "../../features/pcategory/pcategorySlice";
@@ -133,8 +133,7 @@ function Header() {
                                 }}
                                 onClick={async () => {
                                   await dispatch(logout());
-                                  // dispatch(reset())
-                                  // window.location.reload();
+                                  
                                 }}
                               >
                                 Log Out{" "}
@@ -186,16 +185,14 @@ function Header() {
                   <div className="header_search">
                     <div className="header_search_content">
                       <div className="header_search_form_container">
-                        <form
-                          action="!#"
-                          className="header_search_form clearfix"
-                        >
+                        <form className="header_search_form clearfix">
                           <Typeahead
                             id="id"
                             onPaginate={() => ""}
                             onChange={(selected) => {
+                              console.log(selected);
                               if (typeof selected[0]?.prod !== "undefined") {
-                                dispatch(getSingleProduct(selected[0]?.prod));
+                                // dispatch(getSingleProduct(selected[0]?.prod));
                                 navigate(`/products/${selected[0]?.prod}`);
                               }
                             }}
